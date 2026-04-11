@@ -110,7 +110,7 @@ class AiopgScheduleSource(BasePostgresScheduleSource):
         """
         Method to delete schedule by id.
 
-        This is useful for schedule cancelation.
+        This is useful for schedule cancellation.
 
         Args:
             schedule_id: id of schedule to delete.
