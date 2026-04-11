@@ -52,8 +52,11 @@ class AiopgScheduleSource(BasePostgresScheduleSource):
             )
             async with self._database_pool.acquire() as connection, connection.cursor() as cursor:
                 await cursor.execute(CREATE_SCHEDULES_TABLE_QUERY.format(self._table_name))
-            scheduled_tasks_for_creation = self.extract_scheduled_tasks_from_broker()
-            await self._update_schedules_on_startup(scheduled_tasks_for_creation)
+
+            if not self._keep_schedules:
+                logger.debug('Refreshing schedules table')
+                scheduled_tasks_for_creation = self.extract_scheduled_tasks_from_broker()
+                await self._update_schedules_on_startup(scheduled_tasks_for_creation)
         except Exception as error:
             raise exceptions.DatabaseConnectionError(str(error)) from error
 

@@ -60,8 +60,11 @@ class PsycopgScheduleSource(BasePostgresScheduleSource):
             await cursor.execute(
                 sql.SQL(CREATE_SCHEDULES_TABLE_QUERY).format(sql.Identifier(self._table_name)),
             )
-        scheduled_tasks_for_creation = self.extract_scheduled_tasks_from_broker()
-        await self._update_schedules_on_startup(scheduled_tasks_for_creation)
+
+        if not self._keep_schedules:
+            logger.debug('Refreshing schedules table')
+            scheduled_tasks_for_creation = self.extract_scheduled_tasks_from_broker()
+            await self._update_schedules_on_startup(scheduled_tasks_for_creation)
 
     async def shutdown(self) -> None:
         """Close the connection pool."""
