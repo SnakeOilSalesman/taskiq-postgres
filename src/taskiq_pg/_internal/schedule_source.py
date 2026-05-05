@@ -37,7 +37,7 @@ class BasePostgresScheduleSource(ScheduleSource):
             table_name: Name of the table to store scheduled tasks. Will be created automatically if it doesn't exist.
             broker: The TaskIQ broker instance to use for finding and managing tasks.
                 Required if startup_schedule is provided.
-            keep_schedules: Whether or not to keep schedules created on previous run.
+            keep_schedules: Whether or not to keep previously created schedules.
             **connect_kwargs: Additional keyword arguments passed to the database connection pool.
 
         """
